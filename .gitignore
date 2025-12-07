@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.local
+
+# Data (large files - store separately)
+data/raw/
+data/processed/
+data/embeddings/
+*.jsonl
+*.json
+!package.json
+!configs/*.yaml
+!configs/*.yml
+
+# Models (very large - don't commit)
+models/
+*.gguf
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# Training outputs
+outputs/
+merged_model/
+mlruns/
+wandb/
+logs/
+
+# Llama.cpp (cloned during export)
+llama.cpp/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

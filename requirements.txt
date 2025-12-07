@@ -1,0 +1,42 @@
+# Training Stack
+torch>=2.2.0
+axolotl>=0.4.0
+accelerate>=0.27.0
+transformers>=4.40.0
+datasets>=2.18.0
+peft>=0.10.0
+bitsandbytes>=0.43.0
+flash-attn>=2.5.0
+trl>=0.8.0
+
+# Data Collection
+scrapy>=2.11.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+aiohttp>=3.9.0
+PyGithub>=2.2.0
+
+# Data Processing
+polars>=0.20.0
+pandas>=2.2.0
+pyarrow>=15.0.0
+
+# Experiment Tracking
+mlflow>=2.11.0
+dvc>=3.47.0
+
+# Code Analysis
+tree-sitter>=0.21.0
+black>=24.2.0
+
+# Utilities
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+loguru>=0.7.0
+pyyaml>=6.0.0
+jsonlines>=4.0.0
+
+# Evaluation
+rouge-score>=0.1.2
+sacrebleu>=2.4.0
+codebleu>=0.7.0

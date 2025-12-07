@@ -1,0 +1,108 @@
+# Axolotl Training Config for VBScript/Selenium Automation Agent
+# Optimized for RTX 5090 (32GB VRAM)
+
+base_model: deepseek-ai/deepseek-coder-6.7b-instruct
+model_type: AutoModelForCausalLM
+tokenizer_type: AutoTokenizer
+
+# Load in 4-bit for training efficiency
+load_in_8bit: false
+load_in_4bit: false  # Full precision for better quality
+
+# Strict mode for reproducibility
+strict: false
+
+# Dataset configuration
+datasets:
+  - path: ./data/processed/training_data.jsonl
+    type: alpaca
+    # Format:
+    # {"instruction": "...", "input": "...", "output": "..."}
+
+dataset_prepared_path: ./data/prepared
+val_set_size: 0.05
+output_dir: ./outputs
+
+# LoRA Configuration (efficient fine-tuning)
+adapter: lora
+lora_model_dir:
+lora_r: 64                    # Higher rank for code tasks
+lora_alpha: 128               # 2x lora_r is good default
+lora_dropout: 0.05
+lora_target_linear: true      # Target all linear layers
+lora_fan_in_fan_out:
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Sequence length (code needs longer context)
+sequence_len: 4096
+sample_packing: true          # Efficient packing of sequences
+pad_to_sequence_len: true
+
+# Batch size tuned for RTX 5090 32GB VRAM
+# With deepseek-coder-6.7b + LoRA + 4096 context:
+# ~18-20GB VRAM usage, leaving headroom
+micro_batch_size: 4
+gradient_accumulation_steps: 4
+eval_batch_size: 2
+
+# Effective batch size = 4 * 4 = 16
+
+# Training hyperparameters
+num_epochs: 3
+learning_rate: 2e-4
+lr_scheduler: cosine
+warmup_ratio: 0.03
+weight_decay: 0.01
+max_grad_norm: 1.0
+
+# Optimizer (8-bit Adam saves memory)
+optimizer: adamw_8bit
+
+# RTX 5090 Optimizations
+bf16: true                    # RTX 5090 has excellent BF16 support
+tf32: true                    # TensorFloat-32 for faster matmul
+flash_attention: true         # FlashAttention v2
+gradient_checkpointing: true  # Trade compute for memory
+xformers_attention: false     # Use flash_attention instead
+
+# Evaluation and saving
+eval_steps: 100
+save_steps: 500
+save_total_limit: 3
+logging_steps: 10
+
+# Seed for reproducibility
+seed: 42
+
+# Chat template for instruction following
+chat_template: chatml
+
+# Special tokens
+special_tokens:
+  pad_token: "<|endoftext|>"
+
+# Weights & Biases logging (optional)
+# wandb_project: automation-agent
+# wandb_entity:
+# wandb_run_id:
+# wandb_log_model:
+
+# MLflow logging
+mlflow_tracking_uri: ./mlruns
+mlflow_experiment_name: automation-agent
+
+# DeepSpeed config (optional, for multi-GPU or larger models)
+# deepspeed: configs/deepspeed_zero2.json
+
+# Early stopping
+early_stopping_patience: 3
+
+# Debug mode
+debug: false
